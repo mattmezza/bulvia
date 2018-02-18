@@ -12,31 +12,31 @@
 </template>
 
 <script>
-  import Question from './Question.vue'
-  
-  export default {
-    components: {
-      'app-question': Question
+import Question from './Question.vue'
+
+export default {
+  components: {
+    'app-question': Question
+  },
+  computed: {
+    round () {
+      return this.solo ? this.$store.getters.round : Math.floor(this.$store.getters.round / 2)
     },
-    computed: {
-      round() {
-        return this.solo ? this.$store.getters.round : Math.floor(this.$store.getters.round / 2)
-      },
-      maxrounds() {
-        return this.solo ? this.$store.getters.maxrounds : (this.$store.getters.maxrounds / 2)
-      },
-      turn() {
-        return this.$store.getters.turn
-      },
-      solo() {
-        return this.$store.getters.solo
-      },
-      turnNickname() {
-        return this.$store.state.scores[this.turn].nickname
-      }
+    maxrounds () {
+      return this.solo ? this.$store.getters.maxrounds : (this.$store.getters.maxrounds / 2)
     },
-    methods: {
-  
+    turn () {
+      return this.$store.getters.turn
+    },
+    solo () {
+      return this.$store.getters.solo
+    },
+    turnNickname () {
+      return this.$store.state.scores[this.turn].nickname
     }
+  },
+  methods: {
+
   }
+}
 </script>

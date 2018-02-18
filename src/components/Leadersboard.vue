@@ -28,7 +28,7 @@
 <script>
 import _ from 'lodash'
 export default {
-  data() {
+  data () {
     let leaders = [
       { 'nickname': 'Jesse', 'date': new Date(), 'difficulty': 'Easy', 'points': 368 },
       { 'nickname': 'John', 'date': new Date(), 'difficulty': 'Medium', 'points': 50 },

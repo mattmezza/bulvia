@@ -33,19 +33,19 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        isVisible: false,
-        when: new Date().getFullYear()
-      }
-    },
-    methods: {
-      show() {
-        this.isVisible = true
-      }
+export default {
+  data () {
+    return {
+      isVisible: false,
+      when: new Date().getFullYear()
+    }
+  },
+  methods: {
+    show () {
+      this.isVisible = true
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

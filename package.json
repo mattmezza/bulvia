@@ -10,6 +10,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --hot",
     "build": "yarn lint && cross-env NODE_ENV=production webpack --progress --hide-modules",
+    "deploy:gh-pages": "yarn build && gh-pages -d dist",
     "lint": "standard --fix --verbose src/**/*.js | snazzy && eslint --fix src/**/*.vue"
   },
   "dependencies": {
@@ -32,6 +33,7 @@
     "eslint-plugin-standard": "^3.0.1",
     "eslint-plugin-vue": "^4.2.2",
     "file-loader": "^1.1.6",
+    "gh-pages": "^1.1.0",
     "node-sass": "^4.7.2",
     "sass-loader": "^6.0.6",
     "snazzy": "^7.0.0",

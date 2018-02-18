@@ -6,7 +6,7 @@
           Bulvia
         </h1>
         <h2 class="subtitle">
-          An easy to play Trivia game powered by Open Trivia, showcasing bulma.io 😀 
+          An easy to play Trivia game powered by Open Trivia, showcasing bulma.io 😀
         </h2>
       </div>
     </div>

@@ -18,36 +18,36 @@
 </template>
 
 <script>
-  import GameSettings from './GameSettings.vue'
-  import NameInput from './NameInput.vue'
-  export default {
-    components: {
-      'app-game-settings': GameSettings,
-      'app-name-input': NameInput
+import GameSettings from './GameSettings.vue'
+import NameInput from './NameInput.vue'
+export default {
+  components: {
+    'app-game-settings': GameSettings,
+    'app-name-input': NameInput
+  },
+  computed: {
+    nicknameMario () {
+      return this.$store.state.scores['playerOne'].nickname
     },
-    computed: {
-      nicknameMario() {
-        return this.$store.state.scores['playerOne'].nickname
-      },
-      nicknameLuigi() {
-        return this.$store.state.scores['playerTwo'].nickname
-      },
-      multiplayer() {
-        return !this.$store.getters.solo
-      },
-      playable() {
-        if (this.$store.getters.solo) {
-          return this.nicknameMario.length > 1
-        } else {
-          return this.nicknameMario.length > 1 && this.nicknameLuigi.length > 1
-        }
-      }
+    nicknameLuigi () {
+      return this.$store.state.scores['playerTwo'].nickname
     },
-    methods: {
-      startGame() {
-        this.$store.dispatch('startGame')
-        this.$store.commit('pauseGame')
+    multiplayer () {
+      return !this.$store.getters.solo
+    },
+    playable () {
+      if (this.$store.getters.solo) {
+        return this.nicknameMario.length > 1
+      } else {
+        return this.nicknameMario.length > 1 && this.nicknameLuigi.length > 1
       }
     }
+  },
+  methods: {
+    startGame () {
+      this.$store.dispatch('startGame')
+      this.$store.commit('pauseGame')
+    }
   }
+}
 </script>

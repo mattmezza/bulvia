@@ -28,34 +28,31 @@
 </template>
 
 <script>
-  import Leadersboard from './Leadersboard.vue'
-  export default {
-    components: {
-      'app-leadersboard': Leadersboard
+import Leadersboard from './Leadersboard.vue'
+export default {
+  components: {
+    'app-leadersboard': Leadersboard
+  },
+  computed: {
+    solo () {
+      return this.$store.state.solo
     },
-    computed: {
-      solo() {
-        return this.$store.state.solo
-      },
-      points() {
-        return this.$store.state.scores[winner].total
-      },
-      playerOne() {
-        return this.$store.state.scores.playerOne
-      },
-      playerTwo() {
-        return this.$store.state.scores.playerTwo
-      }
+    playerOne () {
+      return this.$store.state.scores.playerOne
     },
-    methods: {
-      newGame(payload) {
-        this.$store.commit('resetGame')
-        if (payload) {
-          this.$store.commit('newGame')
-        } else {
-          this.$store.dispatch('startGame')
-        }
+    playerTwo () {
+      return this.$store.state.scores.playerTwo
+    }
+  },
+  methods: {
+    newGame (payload) {
+      this.$store.commit('resetGame')
+      if (payload) {
+        this.$store.commit('newGame')
+      } else {
+        this.$store.dispatch('startGame')
       }
     }
   }
+}
 </script>
