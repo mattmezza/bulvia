@@ -5,14 +5,14 @@
       <div class="card">
         <div class="card-image">
           <figure class="image is-2by1">
-            <img src="http://lorempixel.com/1280/640/abstract/" alt="Image">
+            <img src="../assets/bg.jpg" alt="Image">
           </figure>
         </div>
         <div class="card-content">
           <div class="media">
             <div class="media-left">
               <figure class="image is-48x48">
-                <img src="https://avatars3.githubusercontent.com/u/1915989?s=460&v=4" alt="Image">
+                <img src="../assets/me.jpg" alt="Image">
               </figure>
             </div>
             <div class="media-content">

@@ -15,7 +15,6 @@ export default {
   },
   methods: {
     setDifficulty (difficulty) {
-      console.log("difficulty", difficulty)
       this.$store.dispatch('setDifficulty', difficulty)
     },
     isDifficult () {
