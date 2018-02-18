@@ -1,38 +1,52 @@
 <template>
-  <section class="section">
+  <section class="section has-text-centered">
     <div class="container">
       <h1 class="title">Start a new game</h1>
       <h2 class="subtitle">
-        Choose a difficulty and enter your username
+        Choose a difficulty and enter your nickname
       </h2>
-      <app-difficulty />
-      <app-name-input label="Nickname" placeholder="Choose your nickname!" maxlength="15" />
+      <app-game-settings />
+      <app-name-input label="Nickname" placeholder="Choose your nickname!" maxlength="15" player="playerOne" />
       <transition name="fade" mode="out-in">
-        <a v-if="playable" class="button is-success is-rounded is-large" @click="startGame()">Start the game, {{username}}</a>
+        <app-name-input v-if="multiplayer" label="Nickname second player" placeholder="Player 2, choose your nickname!" maxlength="15" player="playerTwo" />
+      </transition>
+      <transition name="fade" mode="out-in">
+        <a v-if="playable" class="button is-primary is-rounded is-large" @click="startGame()">{{nicknameMario}}, {{nicknameLuigi}} Start the game</a>
       </transition>
     </div>
   </section>
 </template>
 
 <script>
-  import Difficulty from './Difficulty.vue'
+  import GameSettings from './GameSettings.vue'
   import NameInput from './NameInput.vue'
   export default {
     components: {
-      'app-difficulty': Difficulty,
+      'app-game-settings': GameSettings,
       'app-name-input': NameInput
     },
     computed: {
-      playable() {
-        return this.$store.state.username.length > 1
+      nicknameMario() {
+        return this.$store.state.scores['playerOne'].nickname
       },
-      username() {
-        return this.$store.state.username
+      nicknameLuigi() {
+        return this.$store.state.scores['playerTwo'].nickname
+      },
+      multiplayer() {
+        return !this.$store.getters.solo
+      },
+      playable() {
+        if (this.$store.getters.solo) {
+          return this.nicknameMario.length > 1
+        } else {
+          return this.nicknameMario.length > 1 && this.nicknameLuigi.length > 1
+        }
       }
     },
     methods: {
       startGame() {
         this.$store.dispatch('startGame')
+        this.$store.commit('pauseGame')
       }
     }
   }

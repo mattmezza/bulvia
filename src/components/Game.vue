@@ -3,7 +3,7 @@
     <app-question />
     <section class="section">
       <div class="content is-small has-text-centered">
-        <h4>Question {{round}} of {{maxrounds}}</h4>
+        <h4>Question {{round + 1}} of {{maxrounds + 1}}</h4>
         <progress class="progress is-primary" :value="round" :max="maxrounds"></progress>
       </div>
     </section>

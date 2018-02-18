@@ -3,7 +3,7 @@
     <div class="container">
       <div class="content has-text-centered">
         <p>
-          <strong @click="showMore">Bulvia</strong> by <a href="https://matteo.merola.co">Matteo Merola</a>. The source code is licensed
+          <strong>Bulvia</strong> by <a href="https://matteo.merola.co">Matteo Merola</a>. The source code is licensed
           <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. Check the code on GitHub <a href="https://github.com/mattmezza/bulvia">mattmezza/bulvia</a>.
         </p>
       </div>
@@ -12,10 +12,12 @@
 </template>
 <script>
 export default {
-  methods: {
-    showMore() {
-      this.$store.commit('showMore')
-    }
-  }
+  
 }
 </script>
+
+<style scoped>
+.footer {
+  height: 150px;
+}
+</style>

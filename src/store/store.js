@@ -9,10 +9,11 @@ export const store = new Vuex.Store({
     currentView: 'app-starting',
     difficulty: 'easy',
     seconds: {
-      easy: 30,
-      medium: 20,
-      difficult: 10
+      easy: 30000,
+      medium: 20000,
+      difficult: 10000
     },
+    timerRunning: false,
     username: '',
     currentCategory: { // chosen category
       name: 'Random',
@@ -22,13 +23,15 @@ export const store = new Vuex.Store({
     isGameOver: false, // game state
     isPaused: false,
     round: 0, // round counter, starts at 0, ends at maxrounds. Linked to display of current question
-    maxrounds: 9,
+    maxrounds: 1,
     scores: {
       playerOne: {
+        nickname: 'Mario',
         history: [],
         total: 0
       },
       playerTwo: {
+        nickname: 'Luigi',
         history: [],
         total: 0
       }
@@ -62,7 +65,7 @@ export const store = new Vuex.Store({
   // ========== GETTERS ============
   getters: {
     // Get solo or multiplayer
-    mode: state => {
+    solo: state => {
       return state.solo
     },
     round: state => {
@@ -83,39 +86,52 @@ export const store = new Vuex.Store({
   mutations: {
     // Set game over and show modal after 10 rounds
     isGameOver: state => {
-      if (state.round === state.maxrounds) {
+      if ((state.round === state.maxrounds) || state.isGameOver) {
         state.isGameOver = true
       }
+    },
+    gameOver: state => {
+      state.isGameOver = true
     },
     // Next round
     incrementRound: state => {
       state.round += 1
+      state.seconds.easy = 30000
+      state.seconds.medium = 20000
+      state.seconds.difficult = 10000
     },
     // Restart game with default state
     newGame: state => {
       state.currentCategory.name = 'Random'
       state.currentCategory.id = 9
-      state.currentView = 'app-intro'
+      state.currentView = 'app-starting'
       state.solo = true
+      state.timerRunning = false
     },
     // Pause game state and disable answer buttons after submtting answer
     pauseGame: (state, payload) => {
       if (payload === 'pause') {
         state.isPaused = true
+        state.timerRunning = false
       } else {
         state.isPaused = false
+        state.timerRunning = true
       }
     },
     // Reset common default game parameters
     resetGame: state => {
       state.isGameOver = false
       state.isPaused = false
+      state.timerRunning = false
       state.questions = []
       state.round = 0
       state.scores.playerOne.total = 0
       state.scores.playerTwo.total = 0
       state.scores.playerOne.history = []
       state.scores.playerTwo.history = []
+      state.seconds.easy = 30000
+      state.seconds.medium = 20000
+      state.seconds.difficult = 10000
     },
     // Score after answering question
     score: (state, payload) => {
@@ -125,7 +141,9 @@ export const store = new Vuex.Store({
           correct: true,
           incorrect: false
         })
-        state.scores[player].total += 1
+        let multiplier = state.difficulty === 'difficult' ? 3 : (state.difficulty === 'medium') ? 1.5 : 1
+        let millisLeft = state.seconds[state.difficulty]
+        state.scores[player].total += Math.ceil(multiplier * (millisLeft / 1000))
       } else {
         state.scores[player].history.push({
           correct: false,
@@ -135,7 +153,7 @@ export const store = new Vuex.Store({
     },
     // Set game mode from Starter.vue
     selectMode: (state, payload) => {
-      payload === true ? state.solo = true : state.solo = false
+      payload === true ? state.solo = false : state.solo = true
     },
     // Set current category from Starter.vue
     setCurrentCategory: (state, payload) => {
@@ -145,8 +163,8 @@ export const store = new Vuex.Store({
     difficulty (state, diff) {
       state.difficulty = diff
     },
-    updateUsername (state, newUsername) {
-      state.username = newUsername
+    updateNickname (state, payload) {
+      state.scores[payload.player].nickname = payload.newNickname
     },
     startGame: (state, payload) => {
       // Set questions to payload from http request in startGame action
@@ -177,6 +195,7 @@ export const store = new Vuex.Store({
       })
       // Set view to game
       state.currentView = 'app-game'
+      state.timerRunning = true
     },
     // Apply classes, which indicate correct or incorrect, to buttons after
     // submtting answer
@@ -188,6 +207,9 @@ export const store = new Vuex.Store({
           el.classes = { incorrect: true, 'is-danger': true }
         }
       })
+    },
+    millisElapsed: (state, millis) => {
+      state.seconds[state.difficulty] -= millis
     }
   }
 })

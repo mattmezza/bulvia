@@ -1,13 +1,16 @@
 <template>
   <div class="container has-text-centered">
     <h1 class="title">{{decodedQuestion}}</h1>
-    <p class="subtitle">{{ questions[round].category }}</p>
+    <hr />
+    <p class="subtitle"><strong>Category</strong><br />{{ questions[round].category }}</p>
     <ul>
       <li v-for="(choice, idx) in choices" :key="idx">
         <button @click="answer(choice)" :disabled="isPaused" :class="btnClasses(choice)">{{ decode(choice.text) }}</button>
       </li>
     </ul>
-    <button class="button is-primary" v-if="isPaused" @click="advance">Next</button>
+    <hr />
+    <button class="button is-primary is-rounded" v-if="isPaused && !isGameOver" @click="advance">Next</button>
+    <app-timer />
   </div>
 </template>
 
@@ -15,8 +18,12 @@
   import {
     htmlEntity
   } from '.././htmlEntityMixin'
+  import Timer from './Timer.vue'
   
   export default {
+    components: {
+      'app-timer': Timer
+    },
     mixins: [htmlEntity],
     computed: {
       choices() {
@@ -28,6 +35,9 @@
       },
       isPaused() {
         return this.$store.state.isPaused
+      },
+      isGameOver() {
+        return this.$store.state.isGameOver
       },
       mode() {
         return this.$store.getters.mode
@@ -52,8 +62,8 @@
       advance() {
         // Proceed if less than 10 rounds
         if (this.round <= (this.maxrounds - 1)) {
-          this.$store.commit('pauseGame')
           this.$store.commit('incrementRound')
+          this.$store.commit('pauseGame')          
         }
       },
       btnClasses(choice) {
@@ -73,11 +83,11 @@
         this.$store.commit('styleButtons')
         // Check mode for payload
         let mode;
-        // if (this.mode || this.turn === 'playerOne') {
-        //   mode = 'playerOne'
-        // } else if (this.turn === 'playerTwo') {
-        //   mode = 'playerTwo'
-        // }
+        if (this.mode || this.turn === 'playerOne') {
+          mode = 'playerOne'
+        } else if (this.turn === 'playerTwo') {
+          mode = 'playerTwo'
+        }
         mode = 'playerOne'
         // Check for correct answer and score
         if (choice.answer) {

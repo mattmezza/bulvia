@@ -1,10 +1,10 @@
 <template>
   <div id="main-container">
-    <app-header />
+    <app-header v-if="currentView !== 'app-game'" />
     <div id="current-view-container" class="container is-fluid">
       <component :is="currentView"></component>
     </div>
-    <app-footer />
+    <app-footer v-if="currentView !== 'app-game'" />
     <app-info />
     <app-game-over v-if="isGameOver" />
   </div>
@@ -59,6 +59,6 @@
   
   #current-view-container {
     min-height: 100%;
-    margin-bottom: -150px;
+    margin-bottom: -10px;
   }
 </style>
