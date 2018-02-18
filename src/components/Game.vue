@@ -3,8 +3,9 @@
     <app-question />
     <section class="section">
       <div class="content is-small has-text-centered">
-        <h4>Question {{round + 1}} of {{maxrounds + 1}}</h4>
-        <progress class="progress is-primary" :value="round" :max="maxrounds"></progress>
+        <h4 v-if="!solo">{{turnNickname}}'s turn</h4>
+        <h5>Question {{round + 1}} of {{maxrounds}}</h5>
+        <progress class="progress is-primary" :value="round + 1" :max="maxrounds"></progress>
       </div>
     </section>
   </section>
@@ -19,10 +20,19 @@
     },
     computed: {
       round() {
-        return this.$store.getters.round
+        return this.solo ? this.$store.getters.round : Math.floor(this.$store.getters.round / 2)
       },
-      maxrounds () {
-        return this.$store.getters.maxrounds
+      maxrounds() {
+        return this.solo ? this.$store.getters.maxrounds : (this.$store.getters.maxrounds / 2)
+      },
+      turn() {
+        return this.$store.getters.turn
+      },
+      solo() {
+        return this.$store.getters.solo
+      },
+      turnNickname() {
+        return this.$store.state.scores[this.turn].nickname
       }
     },
     methods: {

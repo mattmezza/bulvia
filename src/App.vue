@@ -5,7 +5,7 @@
       <component :is="currentView"></component>
     </div>
     <app-footer v-if="currentView !== 'app-game'" />
-    <app-info />
+    <app-info v-if="currentView !== 'app-game'" />
     <app-game-over v-if="isGameOver" />
   </div>
 </template>

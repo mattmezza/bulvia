@@ -39,8 +39,8 @@
       isGameOver() {
         return this.$store.state.isGameOver
       },
-      mode() {
-        return this.$store.getters.mode
+      solo() {
+        return this.$store.getters.solo
       },
       // Access questions from store
       questions() {
@@ -60,8 +60,7 @@
     methods: {
       // Reset board, present next question
       advance() {
-        // Proceed if less than 10 rounds
-        if (this.round <= (this.maxrounds - 1)) {
+        if (this.round <= this.maxrounds) {
           this.$store.commit('incrementRound')
           this.$store.commit('pauseGame')          
         }
@@ -82,27 +81,26 @@
         // Apply button styles for correct / incorrect
         this.$store.commit('styleButtons')
         // Check mode for payload
-        let mode;
-        if (this.mode || this.turn === 'playerOne') {
-          mode = 'playerOne'
+        let player;
+        if (this.solo || this.turn === 'playerOne') {
+          player = 'playerOne'
         } else if (this.turn === 'playerTwo') {
-          mode = 'playerTwo'
+          player = 'playerTwo'
         }
-        mode = 'playerOne'
         // Check for correct answer and score
         if (choice.answer) {
           // Score correctly
           this.$store.commit('score', {
-            true: true,
-            mode
+            correct: true,
+            player
           })
           // Call down the stars!
           // this.$store.dispatch('starPower')
         } else {
           // Score incorrectly
           this.$store.commit('score', {
-            false: false,
-            mode
+            correct: false,
+            player
           })
         }
         // Check if game is over

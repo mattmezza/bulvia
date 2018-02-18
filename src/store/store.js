@@ -23,7 +23,7 @@ export const store = new Vuex.Store({
     isGameOver: false, // game state
     isPaused: false,
     round: 0, // round counter, starts at 0, ends at maxrounds. Linked to display of current question
-    maxrounds: 1,
+    maxrounds: 2,
     scores: {
       playerOne: {
         nickname: 'Mario',
@@ -46,9 +46,9 @@ export const store = new Vuex.Store({
       let api
       // Determine if random (default) or chosen category
       if (ctx.state.currentCategory.name === 'Random') {
-        api = 'https://opentdb.com/api.php?amount=10'
+        api = `https://opentdb.com/api.php?amount=${ctx.state.maxrounds}`
       } else {
-        api = 'https://opentdb.com/api.php?amount=10&category=' + ctx.state.currentCategory.id
+        api = `https://opentdb.com/api.php?amount=${ctx.state.maxrounds}&category=${ctx.state.currentCategory.id}`
       }
       Vue.http.get(api)
       .then(response => {
@@ -84,9 +84,9 @@ export const store = new Vuex.Store({
   },
   // ============ MUTATIONS ===============
   mutations: {
-    // Set game over and show modal after 10 rounds
+    // Set game over and show modal after the rounds
     isGameOver: state => {
-      if ((state.round === state.maxrounds) || state.isGameOver) {
+      if ((state.round === state.maxrounds - 1) || state.isGameOver) {
         state.isGameOver = true
       }
     },
@@ -134,11 +134,10 @@ export const store = new Vuex.Store({
       state.seconds.difficult = 10000
     },
     // Score after answering question
-    score: (state, payload) => {
-      let player = payload.mode
-      if (payload.true) {
+    score: (state, {correct, player}) => {
+      if (correct) {
         state.scores[player].history.push({
-          correct: true,
+          correct,
           incorrect: false
         })
         let multiplier = state.difficulty === 'difficult' ? 3 : (state.difficulty === 'medium') ? 1.5 : 1
@@ -146,14 +145,20 @@ export const store = new Vuex.Store({
         state.scores[player].total += Math.ceil(multiplier * (millisLeft / 1000))
       } else {
         state.scores[player].history.push({
-          correct: false,
+          correct,
           incorrect: true
         })
       }
     },
     // Set game mode from Starter.vue
     selectMode: (state, payload) => {
-      payload === true ? state.solo = false : state.solo = true
+      if (payload === true) {
+        state.solo = false
+        state.maxrounds *= 2
+      } else {
+        state.solo = true
+        state.maxrounds /= 2
+      }
     },
     // Set current category from Starter.vue
     setCurrentCategory: (state, payload) => {

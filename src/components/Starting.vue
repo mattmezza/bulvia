@@ -11,7 +11,7 @@
         <app-name-input v-if="multiplayer" label="Nickname second player" placeholder="Player 2, choose your nickname!" maxlength="15" player="playerTwo" />
       </transition>
       <transition name="fade" mode="out-in">
-        <a v-if="playable" class="button is-primary is-rounded is-large" @click="startGame()">{{nicknameMario}}, {{nicknameLuigi}} Start the game</a>
+        <a v-if="playable" class="button is-primary is-rounded is-large" @click="startGame()">{{nicknameMario}}, {{nicknameLuigi}}: start the game!</a>
       </transition>
     </div>
   </section>
