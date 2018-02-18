@@ -53,7 +53,6 @@ export const store = new Vuex.Store({
       Vue.http.get(quoteApi)
       .then(res => res.json())
       .then(data => {
-        console.log(data)
         let newQuote = {
           author: data.author.trim(),
           quote: data.quote.trim()
