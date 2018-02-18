@@ -64,7 +64,7 @@ export default {
     quote () {
       return this.$store.state.quote
     },
-    isGameOver() {
+    isGameOver () {
       return this.$store.state.isGameOver
     }
   },
