@@ -24,7 +24,7 @@ export const store = new Vuex.Store({
     isGameOver: false, // game state
     isPaused: false,
     round: 0, // round counter, starts at 0, ends at maxrounds. Linked to display of current question
-    maxrounds: 2,
+    maxrounds: 12,
     scores: {
       playerOne: {
         nickname: '',

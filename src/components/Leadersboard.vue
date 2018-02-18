@@ -50,16 +50,16 @@
 </template>
 
 <script>
-  export default {
-    computed: {
-      leaders() {
-        return this.$store.state.leadersboard
-      }
-    },
-    mounted() {
-      this.$store.dispatch('getLeaderboards')
+export default {
+  computed: {
+    leaders () {
+      return this.$store.state.leadersboard
     }
+  },
+  mounted () {
+    this.$store.dispatch('getLeaderboards')
   }
+}
 </script>
 
 <style scoped>

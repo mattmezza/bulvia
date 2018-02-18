@@ -1,5 +1,5 @@
 <template>
-  <b-field :label="label" :type="type" :message="message()">
+  <b-field id="input" :label="label" :type="type" :message="message()">
     <b-input v-model.lazy="nickname" :placeholder="placeholder" :maxlength="maxlength"></b-input>
   </b-field>
 </template>
@@ -42,3 +42,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+#field {
+  width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>

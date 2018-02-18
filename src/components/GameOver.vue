@@ -26,95 +26,95 @@
 </template>
 
 <script>
-  import Leadersboard from './Leadersboard.vue'
-  export default {
-    components: {
-      'app-leadersboard': Leadersboard
+import Leadersboard from './Leadersboard.vue'
+export default {
+  components: {
+    'app-leadersboard': Leadersboard
+  },
+  data () {
+    return {
+      areScoresSaved: false
+    }
+  },
+  computed: {
+    solo () {
+      return this.$store.state.solo
     },
-    data() {
-      return {
-        areScoresSaved: false
+    playerOne () {
+      return this.$store.state.scores.playerOne
+    },
+    playerTwo () {
+      return this.$store.state.scores.playerTwo
+    },
+    winner () {
+      if (this.playerOne.total > this.playerTwo.total) {
+        return this.playerOne.nickname
+      } else if (this.playerOne.total === this.playerTwo.total) {
+        return ``
+      } else {
+        return this.playerTwo.nickname
       }
     },
-    computed: {
-      solo() {
-        return this.$store.state.solo
-      },
-      playerOne() {
-        return this.$store.state.scores.playerOne
-      },
-      playerTwo() {
-        return this.$store.state.scores.playerTwo
-      },
-      winner() {
-        if (this.playerOne.total > this.playerTwo.total) {
-          return this.playerOne.nickname
-        } else if (this.playerOne.total === this.playerTwo.total) {
-          return ``
-        } else {
-          return this.playerTwo.nickname
-        }
-      },
-      difficulty() {
-        return this.$store.state.difficulty
-      },
-      draw() {
-        return this.playerOne.total === this.playerTwo.total
-      },
-      quote() {
-        return this.$store.state.quote
+    difficulty () {
+      return this.$store.state.difficulty
+    },
+    draw () {
+      return this.playerOne.total === this.playerTwo.total
+    },
+    quote () {
+      return this.$store.state.quote
+    }
+  },
+  methods: {
+    newGame (payload) {
+      this.$store.commit('resetGame')
+      if (payload) {
+        this.$store.commit('newGame')
+      } else {
+        this.$store.dispatch('startGame')
       }
     },
-    methods: {
-      newGame(payload) {
-        this.$store.commit('resetGame')
-        if (payload) {
-          this.$store.commit('newGame')
-        } else {
-          this.$store.dispatch('startGame')
-        }
-      },
-      saveScore() {
+    saveScore () {
+      let {
+        nickname,
+        total
+      } = this.playerOne
+      const score1 = {
+        nickname,
+        date: new Date(),
+        difficulty: this.difficulty,
+        points: total
+      }
+      let score2 = null
+      if (!this.solo) {
         let {
           nickname,
           total
-        } = this.playerOne
-        const score1 = {
+        } = this.playerTwo
+        score2 = {
           nickname,
           date: new Date(),
           difficulty: this.difficulty,
           points: total
         }
-        let score2 = null
-        if (!this.solo) {
-          let {
-            nickname,
-            total
-          } = this.playerTwo
-          score2 = {
-            nickname,
-            date: new Date(),
-            difficulty: this.difficulty,
-            points: total
-          }
-        }
-        this.$store.dispatch('addScore', {
-          score1,
-          score2
-        })
-        this.scoreSaved()
-      },
-      scoreSaved() {
-        this.areScoresSaved = true
-        this.$toast.open({
-          duration: 5000,
-          message: `Scores saved dude!`,
-          position: 'is-bottom',
-          type: 'is-success'
-        })
       }
+      this.$store.dispatch('addScore', {
+        score1,
+        score2
+      })
+      this.scoreSaved()
+    },
+    scoreSaved () {
+      this.areScoresSaved = true
+      this.$toast.open({
+        duration: 3000,
+        message: `Scores saved!`,
+        position: 'is-bottom',
+        type: 'is-success'
+      })
     }
   }
+}
 </script>
 <style scoped>
 #bg {

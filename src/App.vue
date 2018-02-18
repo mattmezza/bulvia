@@ -1,6 +1,6 @@
 <template>
   <div id="main-container">
-    <app-header v-if="currentView !== 'app-game'" />
+    <app-header />
     <div id="current-view-container" class="container is-fluid">
       <component :is="currentView"></component>
     </div>
