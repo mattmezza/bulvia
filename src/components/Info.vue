@@ -1,7 +1,7 @@
 <template>
   <div>
-    <button v-if="!isVisible" id="info-btn" @click="show" class="button is-info is-rounded"><i class="material-icons">info_outline</i></button>
-    <b-modal :active.sync="isVisible" :width="640" scroll="keep">
+    <button v-if="!isVisible" id="info-btn" @click="show" class="button is-primary is-rounded"><i class="material-icons">info_outline</i></button>
+    <b-modal :active.sync="isVisible" :width="640" scroll="clip">
       <div class="card">
         <div class="card-image">
           <figure class="image is-2by1">

@@ -6,7 +6,7 @@
     </div>
     <app-footer v-if="currentView !== 'app-game'" />
     <app-info v-if="currentView !== 'app-game'" />
-    <app-game-over v-if="isGameOver" />
+    <app-game-over />
   </div>
 </template>
 
@@ -32,9 +32,6 @@
     computed: {
       currentView() {
         return this.$store.state.currentView
-      },
-      isGameOver() {
-        return this.$store.state.isGameOver
       }
     },
     methods: {

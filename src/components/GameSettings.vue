@@ -17,9 +17,9 @@ export default {
     },
     choice () {
       if (this.solo) {
-        return `I'm playing solo 😎`
+        return `Single player`
       } else {
-        return `Multiplayer 👫`
+        return `Multiplayer`
       }
     }
   },

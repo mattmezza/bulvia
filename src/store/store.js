@@ -38,7 +38,7 @@ export const store = new Vuex.Store({
       }
     },
     solo: true, // Game mode, solo or multiplayer?
-    leadersboard: [],
+    leaderboard: [],
     quote: {
       quote: '',
       author: ''
@@ -48,13 +48,15 @@ export const store = new Vuex.Store({
   actions: {
     startGame (ctx) {
       ctx.state.currentView = 'app-loader'
-      const quoteApi = `https://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1&callback=`
+      const quoteApi = `https://talaikis.com/api/quotes/random/`
+      // const quoteApi = `https://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json`
       Vue.http.get(quoteApi)
       .then(res => res.json())
       .then(data => {
+        console.log(data)
         let newQuote = {
-          author: data[0].title,
-          quote: data[0].content.replace(/<(?:.|\n)*?>/gm, '').trim()
+          author: data.author.trim(),
+          quote: data.quote.trim()
         }
         ctx.commit('randomQuote', newQuote)
       })
@@ -253,13 +255,12 @@ export const store = new Vuex.Store({
       state.seconds[state.difficulty] -= millis
     },
     getLeaderboards: (state, leaders) => {
-      state.leadersboard = _.reverse(_.sortBy(leaders, ['points'])).map((el, idx) => {
+      state.leaderboard = _.reverse(_.sortBy(leaders, ['points'])).map((el, idx) => {
         return {...el, placement: idx + 1}
       }).splice(0, 10)
     },
     randomQuote: (state, quote) => {
-      state.quote.author = quote.author
-      state.quote.quote = quote.quote
+      state.quote = quote
     }
   }
 })

@@ -1,15 +1,15 @@
 <template>
   <div class="container has-text-centered">
     <h1 class="title">{{decodedQuestion}}</h1>
-    <hr />
-    <p class="subtitle"><strong>Category</strong><br />{{ questions[round].category }}</p>
-    <ul>
+    <br />
+    <p v-if="false" class="subtitle"><strong>Category</strong><br />{{ questions[round].category }}</p>
+    <ul id="buttons">
       <li v-for="(choice, idx) in choices" :key="idx">
         <button @click="answer(choice)" :disabled="isPaused" :class="btnClasses(choice)">{{ decode(choice.text) }}</button>
       </li>
     </ul>
-    <hr />
-    <button class="button is-primary is-rounded" v-if="isPaused && !isGameOver" @click="advance">Next</button>
+    <br />
+    <button id="next" class="button is-primary is-rounded" v-if="isPaused && !isGameOver" @click="advance">Next</button>
     <app-timer />
   </div>
 </template>
@@ -118,5 +118,20 @@ export default {
   .btn-choice {
     width: 100%;
     margin: 5px auto;
+  }
+  #buttons {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .button {
+    line-height: 30px;
+    height: 70px;
+    font-weight: bold;
+    font-size: large;
+    display: inline-block;
+    max-width: 75%;
+  }
+  #next {
+    min-width: 30%;
   }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <b-modal active :width="640" scroll="keep" animation="fade">
+  <b-modal :active.sync="isGameOver" :width="640" scroll="clip" animation="fade">
     <div class="card">
       <section id="bg" class="section">
         <p class="title has-text-white">"{{quote.quote || 'A random quote here'}}"</p>
@@ -9,7 +9,7 @@
         <div class="media-content has-text-centered">
           <p class="title is-4">Game Over</p>
           <p v-if="draw" class="title is-5">You are even!</p>
-          <p v-else class="title is-5">{{winner}} is the winner!!! 🎊🎉</p>
+          <p v-else class="title is-5">{{winner}} is the winner!!!</p>
           <p class="subtitle is-6">
             {{playerOne.nickname}} scored {{playerOne.total}}<span v-if="!solo">, {{playerTwo.nickname}} scored {{playerTwo.total}}</span>.
           </p>
@@ -19,17 +19,17 @@
           <button class="button is-success is-rounded" @click="newGame(false)">Rematch</button>
           <button v-if="!areScoresSaved" class="button is-primary is-rounded is-inverted" @click="saveScore()">Save scores</button>
         </section>
-        <app-leadersboard />
+        <app-leaderboard />
       </div>
     </div>
   </b-modal>
 </template>
 
 <script>
-import Leadersboard from './Leadersboard.vue'
+import Leaderboard from './Leaderboard.vue'
 export default {
   components: {
-    'app-leadersboard': Leadersboard
+    'app-leaderboard': Leaderboard
   },
   data () {
     return {
@@ -63,6 +63,9 @@ export default {
     },
     quote () {
       return this.$store.state.quote
+    },
+    isGameOver() {
+      return this.$store.state.isGameOver
     }
   },
   methods: {

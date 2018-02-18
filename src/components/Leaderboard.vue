@@ -1,7 +1,7 @@
 <template>
   <section class="section has-text-centered">
     <div class="content">
-      <p>👇 Here's the current leaders board 👇</p>
+      <p class="is-size-5"><strong>Here's the current leaderboard</strong></p>
     </div>
     <b-table :data="leaders" striped narrowed hoverable>
       <template slot-scope="props">
@@ -43,7 +43,7 @@
     </b-table>
     <div class="content has-text-centered" v-if="leaders.length > 0">
       <br />
-      <p class="is-size-6">Honor and glory to the first 10 players!</p>
+      <p class="is-size-6">Honor and glory to the first {{leaders.length}} players!</p>
       <p class="is-size-7">Updated to {{new Date().toLocaleDateString()}}</p>
     </div>
   </section>
@@ -53,7 +53,7 @@
 export default {
   computed: {
     leaders () {
-      return this.$store.state.leadersboard
+      return this.$store.state.leaderboard
     }
   },
   mounted () {
