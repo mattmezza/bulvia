@@ -1,49 +1,69 @@
 <template>
-  <b-table :data="leaders">
-    <template slot-scope="props">
+  <section class="section has-text-centered">
+    <div class="content">
+      <p>👇 Here's the current leaders board 👇</p>
+    </div>
+    <b-table :data="leaders" striped narrowed hoverable>
+      <template slot-scope="props">
         <b-table-column label="#" width="40" numeric>
-            {{ props.row.placement }}
+          {{ props.row.placement }}
         </b-table-column>
         <b-table-column label="NIckname">
-            {{ props.row.nickname }}
+          {{ props.row.nickname }}
         </b-table-column>
         <b-table-column label="When" centered>
-            {{ props.row.date.toLocaleDateString() }}
+          {{ new Date(props.row.date).toLocaleDateString() }}
         </b-table-column>
         <b-table-column label="Difficulty">
-            {{ props.row.difficulty }}
+          {{ props.row.difficulty }}
         </b-table-column>
         <b-table-column label="Points">
-            {{ props.row.points }}
+          {{ props.row.points }}
         </b-table-column>
-    </template>
-    <template slot="footer">
+      </template>
+      <!-- <template slot="footer">
         <div class="has-text-centered">
-            Bulvia &copy; Matteo Merola {{new Date().getFullYear()}}
+          <p>Honor and glory to the first 10 players!</p>
+          <p class="is-size-7">Updated to {{new Date().toLocaleDateString()}}</p>
         </div>
-    </template>
-  </b-table>
+      </template> -->
+      <template slot="empty">
+        <section class="section">
+          <div class="content has-text-grey has-text-centered">
+            <p>
+              <b-icon
+                icon="emoticon-sad"
+                size="is-large">
+              </b-icon>
+            </p>
+            <p>There are no leaders yet, you can be one the first one!!!</p>
+          </div>
+        </section>
+      </template>
+    </b-table>
+    <div class="content has-text-centered" v-if="leaders.length > 0">
+      <br />
+      <p class="is-size-6">Honor and glory to the first 10 players!</p>
+      <p class="is-size-7">Updated to {{new Date().toLocaleDateString()}}</p>
+    </div>
+  </section>
 </template>
 
 <script>
-import _ from 'lodash'
-export default {
-  data () {
-    let leaders = [
-      { 'nickname': 'Jesse', 'date': new Date(), 'difficulty': 'Easy', 'points': 368 },
-      { 'nickname': 'John', 'date': new Date(), 'difficulty': 'Medium', 'points': 50 },
-      { 'nickname': 'Tina', 'date': new Date(), 'difficulty': 'Difficult', 'points': 658 },
-      { 'nickname': 'Clarence', 'date': new Date(), 'difficulty': 'Medium', 'points': 368 },
-      { 'nickname': 'Anne', 'date': new Date(), 'difficulty': 'Easy', 'points': 500 }
-    ]
-    leaders = _.sortBy(leaders, ['points'])
-    leaders = _.reverse(leaders)
-    leaders = leaders.map((el, idx) => {
-      return {...el, placement: idx + 1}
-    })
-    return {
-      leaders
+  export default {
+    computed: {
+      leaders() {
+        return this.$store.state.leadersboard
+      }
+    },
+    mounted() {
+      this.$store.dispatch('getLeaderboards')
     }
   }
-}
 </script>
+
+<style scoped>
+#no-content {
+  font-style: italic;
+}
+</style>

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import _ from 'lodash'
+import localStorage from 'store'
 
 Vue.use(Vuex)
 
@@ -26,22 +27,37 @@ export const store = new Vuex.Store({
     maxrounds: 2,
     scores: {
       playerOne: {
-        nickname: 'Mario',
+        nickname: '',
         history: [],
         total: 0
       },
       playerTwo: {
-        nickname: 'Luigi',
+        nickname: '',
         history: [],
         total: 0
       }
     },
-    solo: true // Game mode, solo or multiplayer?
+    solo: true, // Game mode, solo or multiplayer?
+    leadersboard: [],
+    quote: {
+      quote: '',
+      author: ''
+    }
   },
   // =============== ACTIONS ===============
   actions: {
     startGame (ctx) {
       ctx.state.currentView = 'app-loader'
+      const quoteApi = `https://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1&callback=`
+      Vue.http.get(quoteApi)
+      .then(res => res.json())
+      .then(data => {
+        let newQuote = {
+          author: data[0].title,
+          quote: data[0].content.replace(/<(?:.|\n)*?>/gm, '').trim()
+        }
+        ctx.commit('randomQuote', newQuote)
+      })
       // Fetch batch of questions for specific category
       let api
       // Determine if random (default) or chosen category
@@ -60,6 +76,26 @@ export const store = new Vuex.Store({
     },
     setDifficulty (ctx, difficulty) {
       ctx.commit('difficulty', difficulty)
+    },
+    getLeaderboards (ctx) {
+      let leaders = localStorage.get('leaders')
+      if (!leaders) {
+        leaders = []
+      }
+      ctx.commit('getLeaderboards', leaders)
+    },
+    addScore (ctx, {score1, score2}) {
+      let leaders = localStorage.get('leaders')
+      if (!leaders) {
+        localStorage.set('leaders', [])
+        leaders = localStorage.get('leaders')
+      }
+      leaders.push(score1)
+      if (score2) {
+        leaders.push(score2)
+      }
+      localStorage.set('leaders', leaders)
+      ctx.commit('getLeaderboards', leaders)
     }
   },
   // ========== GETTERS ============
@@ -215,6 +251,15 @@ export const store = new Vuex.Store({
     },
     millisElapsed: (state, millis) => {
       state.seconds[state.difficulty] -= millis
+    },
+    getLeaderboards: (state, leaders) => {
+      state.leadersboard = _.reverse(_.sortBy(leaders, ['points'])).map((el, idx) => {
+        return {...el, placement: idx + 1}
+      }).splice(0, 10)
+    },
+    randomQuote: (state, quote) => {
+      state.quote.author = quote.author
+      state.quote.quote = quote.quote
     }
   }
 })
