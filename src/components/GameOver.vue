@@ -1,5 +1,5 @@
 <template>
-  <b-modal :active.sync="isGameOver" :width="640" scroll="clip" animation="fade">
+  <b-modal :active.sync="isGameOver" :width="640" scroll="clip" animation="fade" :canCancel="false">
     <div class="card">
       <section id="bg" class="section">
         <p class="title has-text-white">"{{quote.quote || 'A random quote here'}}"</p>
@@ -70,6 +70,7 @@ export default {
   },
   methods: {
     newGame (payload) {
+      this.areScoresSaved = false
       this.$store.commit('resetGame')
       if (payload) {
         this.$store.commit('newGame')
