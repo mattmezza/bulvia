@@ -144,6 +144,7 @@ export const store = new Vuex.Store({
       state.currentView = 'app-starting'
       state.solo = true
       state.timerRunning = false
+      state.maxrounds = 12
     },
     // Pause game state and disable answer buttons after submtting answer
     pauseGame: (state, payload) => {
